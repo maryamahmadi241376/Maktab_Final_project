@@ -5,7 +5,6 @@ from django.core.validators import MinValueValidator
 
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
-
     def __str__(self):
         return self.email
 
