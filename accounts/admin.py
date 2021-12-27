@@ -84,8 +84,12 @@ class CustomRestaurantManager(UserAdmin):
     def get_queryset(self, request):
         return Customer.objects.filter(is_staff = True)
 
+class AddressInline(admin.TabularInline):
+    model = Address.customer.through
+    
 @admin.register(Customer)
 class CustomCustomer(UserAdmin):
+    inlines = [AddressInline]
     model = Customer
     list_display = ['email','username','is_staff','is_superuser']
     list_editable = ['username',]
@@ -111,3 +115,28 @@ class CustomCustomer(UserAdmin):
         )
     def get_queryset(self, request):
         return Customer.objects.filter(is_staff = False)
+
+@admin.register(Address)
+class CustomAddress(admin.ModelAdmin):
+    model = Address
+    list_display = ['state','city','street']
+    list_editable = ['street',]
+    empty_value_display = 'is null'
+    list_filter = ['state','city','street',]
+    list_per_page = 2
+    search_fields = ('state','city')
+    fieldsets = (
+            (None, {
+                "fields": (
+                    'state','city'
+                ),
+            }),
+            ('personal info', {
+                "description": 'This is personal information :)',
+                "classes": ('collapse',),
+                "fields": (
+                    'street','pluque'
+                ),
+                }
+            ),
+        )
