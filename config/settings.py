@@ -83,8 +83,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'order_online',
-        'USER': 'postgres',
+        'NAME': 'myproject',
+        'USER': 'myprojectuser',
         'PASSWORD': 'mn23241376',
         'HOST': 'localhost',
         'PORT': '',
@@ -150,5 +150,5 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True 
 ACCOUNT_UNIQUE_EMAIL = True 
 
-# MEDIA_ROOT = BASE_DIR/'media/'
-# MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR/'media/'
+MEDIA_URL = '/media/'
