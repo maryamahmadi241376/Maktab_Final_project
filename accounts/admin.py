@@ -1,54 +1,53 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 from .models import *
+from .forms import CustomUserCreationForm,CustomUserChangeForm
 
 
 @admin.register(CustomUser)
-class CustomUserAdmin(UserAdmin):
-    list_display = ['email','username','is_staff','is_superuser']
-    list_editable = ['username',]
+class CustomUserAdmin(admin.ModelAdmin):
+    add_form = CustomUserCreationForm 
+    form = CustomUserChangeForm
+    model = CustomUser
+    list_display = ['email','password']
     empty_value_display = 'is null'
-    list_filter = ['first_name','email','date_joined',]
+    list_filter = ['email']
     list_per_page = 2
-    search_fields = ('username','email')
-    date_directly = ['date_joined']
+    search_fields = ('email',)
     fieldsets = (
             (None, {
                 "fields": (
-                    'email','username'
+                    'email','password'
                 ),
             }),
             ('personal info', {
                 "description": 'This is personal information :)',
                 "classes": ('collapse',),
                 "fields": (
-                    'first_name','last_name','date_joined'
+                    'date_joined',
                 ),
                 }
             ),
         )
 
 @admin.register(Admin)
-class CustomAdmin(UserAdmin):
+class CustomAdmin(admin.ModelAdmin):
     model = Admin
-    list_display = ['email','username','is_staff','is_superuser']
-    list_editable = ['username',]
+    list_display = ['email','password']
     empty_value_display = 'is null'
-    list_filter = ['first_name','email','date_joined',]
+    list_filter = ['email']
     list_per_page = 2
-    search_fields = ('username','email')
-    date_directly = ['date_joined']
+    search_fields = ('email',)
     fieldsets = (
             (None, {
                 "fields": (
-                    'email','username'
+                    'email','password'
                 ),
             }),
             ('personal info', {
                 "description": 'This is personal information :)',
                 "classes": ('collapse',),
                 "fields": (
-                    'first_name','last_name','date_joined'
+                    'date_joined',
                 ),
                 }
             ),
@@ -57,58 +56,54 @@ class CustomAdmin(UserAdmin):
         return Customer.objects.filter(is_superuser = True)
 
 @admin.register(RestaurantManager)
-class CustomRestaurantManager(UserAdmin):
+class CustomRestaurantManager(admin.ModelAdmin):
     model = RestaurantManager
-    list_display = ['email','username','is_staff','is_superuser']
-    list_editable = ['username',]
+    list_display = ['email','password']
     empty_value_display = 'is null'
-    list_filter = ['first_name','email','date_joined',]
+    list_filter = ['email']
     list_per_page = 2
-    search_fields = ('username','email')
-    date_directly = ['date_joined']
+    search_fields = ('email',)
     fieldsets = (
             (None, {
                 "fields": (
-                    'email','username'
+                    'email','password'
                 ),
             }),
             ('personal info', {
                 "description": 'This is personal information :)',
                 "classes": ('collapse',),
                 "fields": (
-                    'first_name','last_name','date_joined'
+                    'date_joined',
                 ),
                 }
             ),
         )
     def get_queryset(self, request):
-        return Customer.objects.filter(is_staff = True)
+        return Customer.objects.filter(is_staff = True,is_superuser = False)
 
 class AddressInline(admin.TabularInline):
     model = Address.customer.through
     
 @admin.register(Customer)
-class CustomCustomer(UserAdmin):
+class CustomCustomer(admin.ModelAdmin):
     inlines = [AddressInline]
     model = Customer
-    list_display = ['email','username','is_staff','is_superuser']
-    list_editable = ['username',]
+    list_display = ['email','password']
     empty_value_display = 'is null'
-    list_filter = ['first_name','email','date_joined',]
+    list_filter = ['email']
     list_per_page = 2
-    search_fields = ('username','email')
-    date_directly = ['date_joined']
+    search_fields = ('email',)
     fieldsets = (
             (None, {
                 "fields": (
-                    'email','username'
+                    'email','password'
                 ),
             }),
             ('personal info', {
                 "description": 'This is personal information :)',
                 "classes": ('collapse',),
                 "fields": (
-                    'first_name','last_name','date_joined'
+                    'date_joined',
                 ),
                 }
             ),
