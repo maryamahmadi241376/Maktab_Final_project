@@ -6,6 +6,9 @@ from django.core.validators import MinValueValidator
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
 
+    def __str__(self):
+        return self.email
+
 class Admin(CustomUser):
     class Meta:
         proxy = True
@@ -28,4 +31,4 @@ class Address(models.Model):
     pluque = models.IntegerField(validators = [MinValueValidator(1)])
     
     def __str__(self):
-        return self.state+","+self.city+","+self.street+","+self.pluque
+        return self.state+","+self.city+","+self.street
