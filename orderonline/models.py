@@ -15,7 +15,7 @@ class Order(models.Model):
     branch = models.ForeignKey('RestaurantBranch',related_name="delivery",on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.status
+        return self.customer_status
 
 class Food(models.Model):
     food_name = models.CharField(max_length=200,verbose_name="food_name")
@@ -46,7 +46,7 @@ class Menu(models.Model):   #middle table
     number = models.IntegerField()
 
     def __str__(self):
-        return f"food id : {self.food}"
+        return f"food price : {self.price}"
 
 class Restaurant(models.Model):
     restaurant_name = models.CharField(max_length=200,verbose_name="restaurant_name")
