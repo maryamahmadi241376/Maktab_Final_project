@@ -1,14 +1,12 @@
 from django.contrib import admin
 from .models import *
-from .forms import CustomUserCreationForm,CustomUserChangeForm
+# from .forms import CustomUserCreationForm,CustomUserChangeForm
 
 
 @admin.register(CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
-    add_form = CustomUserCreationForm 
-    form = CustomUserChangeForm
     model = CustomUser
-    list_display = ['email','password']
+    list_display = ['email','username','is_staff','is_superuser']
     empty_value_display = 'is null'
     list_filter = ['email']
     list_per_page = 2
@@ -32,54 +30,54 @@ class CustomUserAdmin(admin.ModelAdmin):
 @admin.register(Admin)
 class CustomAdmin(admin.ModelAdmin):
     model = Admin
-    list_display = ['email','password']
+    list_display = ['email','username','is_staff','is_superuser']
     empty_value_display = 'is null'
     list_filter = ['email']
     list_per_page = 2
     search_fields = ('email',)
-    fieldsets = (
-            (None, {
-                "fields": (
-                    'email','password'
-                ),
-            }),
-            ('personal info', {
-                "description": 'This is personal information :)',
-                "classes": ('collapse',),
-                "fields": (
-                    'date_joined',
-                ),
-                }
-            ),
-        )
+    # fieldsets = (
+    #         (None, {
+    #             "fields": (
+    #                 'username','email','password'
+    #             ),
+    #         }),
+    #         ('personal info', {
+    #             "description": 'This is personal information :)',
+    #             "classes": ('collapse',),
+    #             "fields": (
+    #                 'date_joined',
+    #             ),
+    #             }
+    #         ),
+    #     )
     def get_queryset(self, request):
         return Customer.objects.filter(is_superuser = True)
 
 @admin.register(RestaurantManager)
 class CustomRestaurantManager(admin.ModelAdmin):
     model = RestaurantManager
-    list_display = ['email','password']
+    list_display = ['email','username','is_staff','is_superuser']
     empty_value_display = 'is null'
     list_filter = ['email']
     list_per_page = 2
     search_fields = ('email',)
-    fieldsets = (
-            (None, {
-                "fields": (
-                    'email','password'
-                ),
-            }),
-            ('personal info', {
-                "description": 'This is personal information :)',
-                "classes": ('collapse',),
-                "fields": (
-                    'date_joined',
-                ),
-                }
-            ),
-        )
+    # fieldsets = (
+    #         (None, {
+    #             "fields": (
+    #                 'username','email','password'
+    #             ),
+    #         }),
+    #         ('personal info', {
+    #             "description": 'This is personal information :)',
+    #             "classes": ('collapse',),
+    #             "fields": (
+    #                 'date_joined',
+    #             ),
+    #             }
+    #         ),
+    #     )
     def get_queryset(self, request):
-        return Customer.objects.filter(is_staff = True,is_superuser = False)
+        return Customer.objects.filter(is_staff = True)
 
 class AddressInline(admin.TabularInline):
     model = Address.customer.through
@@ -88,26 +86,26 @@ class AddressInline(admin.TabularInline):
 class CustomCustomer(admin.ModelAdmin):
     inlines = [AddressInline]
     model = Customer
-    list_display = ['email','password']
+    list_display = ['email','username','is_staff','is_superuser']
     empty_value_display = 'is null'
     list_filter = ['email']
     list_per_page = 2
     search_fields = ('email',)
-    fieldsets = (
-            (None, {
-                "fields": (
-                    'email','password'
-                ),
-            }),
-            ('personal info', {
-                "description": 'This is personal information :)',
-                "classes": ('collapse',),
-                "fields": (
-                    'date_joined',
-                ),
-                }
-            ),
-        )
+    # fieldsets = (
+    #         (None, {
+    #             "fields": (
+    #                 'username','email','password'
+    #             ),
+    #         }),
+    #         ('personal info', {
+    #             "description": 'This is personal information :)',
+    #             "classes": ('collapse',),
+    #             "fields": (
+    #                 'date_joined',
+    #             ),
+    #             }
+    #         ),
+    #     )
     def get_queryset(self, request):
         return Customer.objects.filter(is_staff = False)
 
