@@ -124,37 +124,37 @@ class PostFoodCategoryCreate(CreateView):
 #     return render(request, 'order_detail.html', context)
 
 
-# def cart(request):
-#     # customer = request.user.customer
-#     if request.method =="POST":
-#         print(request.user)
-#         if request.customer.username:
-#             branch_orderitem = RestaurantBranch.objects.filter(branch_menus__orderitems__order__customer= request.customer.username)
-#             orderitems = OrderItem.objects.all().filter(order__customer=request.customer.username)
-#             total_price = sum([item.get_total for item in orderitems])
+def cart(request):
+    # customer = request.user.customer
+    if request.method =="POST":
+        print(request.user)
+        if request.customer.username:
+            branch_orderitem = RestaurantBranch.objects.filter(branch_menus__orderitems__order__customer= request.customer.username)
+            orderitems = OrderItem.objects.all().filter(order__customer=request.customer.username)
+            total_price = sum([item.get_total for item in orderitems])
             
-#             branch_order = Order.objects.get_or_create(customer=request.customer.username,customer_status="order_confirmed",branch=branch_orderitem)
+            branch_order = Order.objects.get_or_create(customer=request.customer.username,customer_status="order_confirmed",branch=branch_orderitem)
             
 
-#     try:
-#         customer = request.user.customer
-#         customer_address = Address.objects.filter(customer__username = customer.username)
+    try:
+        customer = request.user.customer
+        customer_address = Address.objects.filter(customer__username = customer.username)
 
-#         device = request.COOKIES['device']
-#         orderitems=OrderItem.objects.filter(order__customer__username=customer.username)
-#         food = Food.objects.filter(food_menu__orderitems__order__customer__username=customer.username)
-#         orders = Order.objects.filter(customer__username=customer.username)
+        device = request.COOKIES['device']
+        orderitems=OrderItem.objects.filter(order__customer__username=customer.username)
+        food = Food.objects.filter(food_menu__orderitems__order__customer__username=customer.username)
+        orders = Order.objects.filter(customer__username=customer.username)
 
-#     except:
-#         device = request.COOKIES['device']
-#         orderitems=OrderItem.objects.filter(order__customer__username=device)
-#         food = Food.objects.filter(food_menu__orderitems__order__customer__username=device)
-#         orders = Order.objects.filter(customer__username=device) 
-#         customer, created = Customer.objects.get_or_create(device=device ,username = device)
+    except:
+        device = request.COOKIES['device']
+        orderitems=OrderItem.objects.filter(order__customer__username=device)
+        food = Food.objects.filter(food_menu__orderitems__order__customer__username=device)
+        orders = Order.objects.filter(customer__username=device) 
+        customer, created = Customer.objects.get_or_create(device=device ,username = device)
         
 
-#     context = {'orders':orders,"orderitems": orderitems,"food":food}
-#     return render(request, 'cart.html', context)
+    context = {'orders':orders,"orderitems": orderitems,"food":food}
+    return render(request, 'cart.html', context)
 
 
 # class OrderItemDeleteView(DeleteView):
