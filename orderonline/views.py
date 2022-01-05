@@ -98,30 +98,30 @@ class PostFoodCategoryCreate(CreateView):
 # #     return reverse_lazy('home')
 
 
-# def food(request,pk):  
-#     menus = Menu.objects.get(id = pk)
-#     food = Food.objects.get(food_menu__id = pk)
-#     if request.method == 'POST':
-#         #Get user account information
-#         try:
-#             customer = request.user.customer
-#         except:
-#             device = request.COOKIES['device']
-#             customer, created = Customer.objects.get_or_create(device=device,username=device)
+def food(request,pk):  
+    menus = Menu.objects.get(id = pk)
+    food = Food.objects.get(food_menu__id = pk)
+    if request.method == 'POST':
+        #Get user account information
+        try:
+            customer = request.user.customer
+        except:
+            device = request.COOKIES['device']
+            customer, created = Customer.objects.get_or_create(device=device,username=device)
 
-#         menu = (Menu.objects.all().filter(id = pk).values_list('menu_number').last())[0]
-#         if menu >= int(request.POST['number']):
-#             order, created = Order.objects.get_or_create(customer=customer, customer_status='ordered',total_price=1000)
-#             orderItem, created = OrderItem.objects.get_or_create(order=order, menu=menus,number=request.POST['number'])
-#             orderItem.number =request.POST['number']
-#             orderItem.save()
-#             return redirect('add_to_cart')
-#         else:
-#             context = {'menus':menus, "food":food ,'msg':"not enough foods"}
-#             return render(request, 'order_detail.html', context)
+        menu = (Menu.objects.all().filter(id = pk).values_list('menu_number').last())[0]
+        if menu >= int(request.POST['number']):
+            order, created = Order.objects.get_or_create(customer=customer, customer_status='ordered',total_price=1000)
+            orderItem, created = OrderItem.objects.get_or_create(order=order, menu=menus,number=request.POST['number'])
+            orderItem.number =request.POST['number']
+            orderItem.save()
+            return redirect('add_to_cart')
+        else:
+            context = {'menus':menus, "food":food ,'msg':"not enough foods"}
+            return render(request, 'order_detail.html', context)
 
-#     context = {'menus':menus, "food":food }
-#     return render(request, 'order_detail.html', context)
+    context = {'menus':menus, "food":food }
+    return render(request, 'order_detail.html', context)
 
 
 def cart(request):
@@ -157,11 +157,11 @@ def cart(request):
     return render(request, 'cart.html', context)
 
 
-# class OrderItemDeleteView(DeleteView):
-#     model = OrderItem
-#     template_name = "delete_food.html"
-#     success_url = reverse_lazy("home")
-#     fields = "__all__"
+class OrderItemDeleteView(DeleteView):
+    model = OrderItem
+    template_name = "delete_food.html"
+    success_url = reverse_lazy("home")
+    fields = "__all__"
 
 
 # # def most_selling_foods(req):
