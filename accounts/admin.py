@@ -1,12 +1,10 @@
 from django.contrib import admin
 from .models import *
-# from .forms import CustomUserCreationForm,CustomUserChangeForm
-
 
 @admin.register(CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
     model = CustomUser
-    list_display = ['email','username','is_staff','is_superuser']
+    list_display = ['email','username','is_staff','is_superuser','password']
     empty_value_display = 'is null'
     list_filter = ['email']
     list_per_page = 2
@@ -35,23 +33,15 @@ class CustomAdmin(admin.ModelAdmin):
     list_filter = ['email']
     list_per_page = 2
     search_fields = ('email',)
-    # fieldsets = (
-    #         (None, {
-    #             "fields": (
-    #                 'username','email','password'
-    #             ),
-    #         }),
-    #         ('personal info', {
-    #             "description": 'This is personal information :)',
-    #             "classes": ('collapse',),
-    #             "fields": (
-    #                 'date_joined',
-    #             ),
-    #             }
-    #         ),
-    #     )
+    fieldsets = (
+            (None, {
+                "fields": (
+                    'username','email','password'
+                ),
+            }),
+        )
     def get_queryset(self, request):
-        return Customer.objects.filter(is_superuser = True)
+        return Admin.objects.filter(is_superuser = True,is_staff=True)   #CustomUser instead of Admin?
 
 @admin.register(RestaurantManager)
 class CustomRestaurantManager(admin.ModelAdmin):
@@ -61,23 +51,19 @@ class CustomRestaurantManager(admin.ModelAdmin):
     list_filter = ['email']
     list_per_page = 2
     search_fields = ('email',)
-    # fieldsets = (
-    #         (None, {
-    #             "fields": (
-    #                 'username','email','password'
-    #             ),
-    #         }),
-    #         ('personal info', {
-    #             "description": 'This is personal information :)',
-    #             "classes": ('collapse',),
-    #             "fields": (
-    #                 'date_joined',
-    #             ),
-    #             }
-    #         ),
-    #     )
+    fieldsets = (
+            (None, {
+                "fields": (
+                    'username','email','password',
+                ),
+            }),
+        )
     def get_queryset(self, request):
-        return Customer.objects.filter(is_staff = True)
+        return RestaurantManager.objects.filter(is_staff = True,is_superuser = False)
+
+    def save_model(self, request, obj, form, change):
+        obj.set_password(form.cleaned_data["password"])
+        obj.save()
 
 class AddressInline(admin.TabularInline):
     model = Address.customer.through
@@ -91,23 +77,18 @@ class CustomCustomer(admin.ModelAdmin):
     list_filter = ['email']
     list_per_page = 2
     search_fields = ('email',)
-    # fieldsets = (
-    #         (None, {
-    #             "fields": (
-    #                 'username','email','password'
-    #             ),
-    #         }),
-    #         ('personal info', {
-    #             "description": 'This is personal information :)',
-    #             "classes": ('collapse',),
-    #             "fields": (
-    #                 'date_joined',
-    #             ),
-    #             }
-    #         ),
-    #     )
+    fieldsets = (
+            (None, {
+                "fields": (
+                    'username','email','password',
+                ),
+            }),
+        )
     def get_queryset(self, request):
-        return Customer.objects.filter(is_staff = False)
+        return Customer.objects.filter(is_staff = False,is_superuser = False)
+    def save_model(self, request, obj, form, change):
+        obj.set_password(form.cleaned_data["password"])
+        obj.save()    
 
 @admin.register(Address)
 class CustomAddress(admin.ModelAdmin):
