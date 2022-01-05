@@ -48,29 +48,29 @@ def show_foods(req):
 # #     return Response(foods.data)
 
 
-# class FoodCreate(CreateView):
-#     model = Food
-#     template_name = "websitemanager.html"
-#     success_url = reverse_lazy('foods')
-#     fields = "__all__"
+class FoodCreate(CreateView):
+    model = Food
+    template_name = "websitemanager.html"
+    success_url = reverse_lazy('foods')
+    fields = "__all__"
 
-# class FoodUpdate(UpdateView):
-#     model = Food
-#     template_name = "update_food.html"
-#     success_url = reverse_lazy('foods')
-#     fields = "__all__"
+class FoodUpdate(UpdateView):
+    model = Food
+    template_name = "update_food.html"
+    success_url = reverse_lazy('foods')
+    fields = "__all__"
 
-# class FoodDelete(DeleteView):
-#     model = Food
-#     template_name = "delete_food.html"
-#     success_url = reverse_lazy('foods')
-#     fields = "__all__"
+class FoodDelete(DeleteView):
+    model = Food
+    template_name = "delete_food.html"
+    success_url = reverse_lazy('foods')
+    fields = "__all__"
 
-# class PostFoodCategoryCreate(CreateView):
-#     model = FoodCategory
-#     template_name = "food_category_form.html"
-#     success_url = reverse_lazy('add_food')
-#     fields = "__all__"   
+class PostFoodCategoryCreate(CreateView):
+    model = FoodCategory
+    template_name = "food_category_form.html"
+    success_url = reverse_lazy('add_food')
+    fields = "__all__"   
 
 
 # # def cart(request,pk):
