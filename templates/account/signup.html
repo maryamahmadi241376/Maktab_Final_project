@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-white container">
+    <h2>Sign Up</h2>
+    <form method="post" class="text-white">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div>
+        {% comment %} <input class="sendButton btn btn-success" type="submit" value="website Manager"> {% endcomment %}
+        <input class="sendButton btn btn-primary" type="submit"  value="Restaurant Manager">
+        </div>
+    <p class="text-center">If you already have an account, <a href="{% url 'accoint_login'%}">login</a> instead.</p>
+
+    </form>
+</div>
+{% endblock content %}
