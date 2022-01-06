@@ -11,13 +11,13 @@
     <li><a href="{% url 'add_food' %}">Add Food</a></li>
     <li><a href="{% url 'foods' %}">Foods</a></li>
     <li><a href="{% url 'add_food_category' %}">Add Category</a></li>
-    <li><a href="{%url 'account_logout'%}">LogOut</a></li>
+    {% comment %} <li><a href="{%url 'account_logout'%}">LogOut</a></li> {% endcomment %}
     {% elif user.is_authenticated and user.is_staff%}
     <li><a href="{% url 'add_manager' %}">Sign Up</a></li>
-    <li><a href="{%url 'account_logout'%}">LogOut</a></li>
+    {% comment %} <li><a href="{%url 'account_logout'%}">LogOut</a></li> {% endcomment %}
 
     {% else %}
-    <li><a href="{%url 'account_logout'%}">LogOut</a></li>
+    {% comment %} <li><a href="{%url 'account_logout'%}">LogOut</a></li> {% endcomment %}
 
     {% endif %}
 
@@ -27,7 +27,7 @@
 {% endblock nav %}
 {% block content %}
 
-<h2> Most Seller Foods </h2>
+<h2 class="text-white m-5"> Most Seller Foods </h2>
 
 <article id="content" class="container col-11">
 	<div class="wrap">
@@ -52,7 +52,7 @@
 </article>
 
 
-<h2> Most Seller Branches </h2>
+<h2 class="text-white m-5"> Most Seller Branches </h2>
 
 <article id="content" class="container col-11">
 	<div class="wrap">
@@ -87,7 +87,7 @@
 
 
 
-<h2> Menues </h2>
+<h2 class="text-white m-5"> Menues </h2>
 <article id="content" class="container col-11">
 	<div class="wrap">
 {% for i in menus %}

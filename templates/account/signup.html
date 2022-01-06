@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="text-white container">
-    <h2>Sign Up</h2>
-    <form method="post" class="text-white">
+<div class="content wrap box container">
+    <h2 class="letter_spacing">Sign Up <span>Form</span></h2>
+    <form method="post" class="text-secondary">
         {% csrf_token %}
         {{ form.as_p }}
         <div>
         {% comment %} <input class="sendButton btn btn-success" type="submit" value="website Manager"> {% endcomment %}
-        <input class="sendButton btn btn-primary" type="submit"  value="Restaurant Manager">
+        <input class="sendButton btn btn-primary" type="submit"  value="Manager Sign Up">
         </div>
-    <p class="text-center">If you already have an account, <a href="{% url 'accoint_login'%}">login</a> instead.</p>
+    <p class="text-center">If you already have an account, <a href="{% url 'account_login'%}">login</a> instead.</p>
 
     </form>
 </div>

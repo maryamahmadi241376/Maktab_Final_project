@@ -33,10 +33,11 @@
 				<nav class='col-12'>
 					<ul id="menu" class='col-sm-7'>
 						<li><a href="{%url 'add_to_cart'%}">Cart</a></li>
-						<li><a href="{% url 'account_login' %}">Log In</a></li>
+						<li><a href="{% url 'account_login' %}">LogIn</a></li>
+						<li><a href="{% url 'account_logout' %}">LogOut</a></li>
 						<li><a href="{%url 'home'%}">Home</a></li>
-						<li><a href="{%url 'managers_signup'%}">Managers Sign Up</a></li>
-						<li><a href="{% url 'add_address' %}">Customers Sign Up</a></li>
+						<li><a href="{%url 'add_manager'%}">Managers SignUp</a></li>
+						<li><a href="{% url 'add_address' %}">Customers SignUp</a></li>
 						{% comment %} <li class="active"><a href="Contacts.html">Contacts</a></li> {% endcomment %}
 						{% block nav %}{% endblock nav %}
 

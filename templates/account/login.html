@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+<!-- / header -->
+<!-- content -->
+{% block content %}
+<article id="content">
+	<div class="wrap">
+		<div class="box">
+			<div>
+				<h2 class="letter_spacing">Log in <span>Form</span></h2>
+				
+				<div id="contact_form">	
+					<strong>Hello !! You can login here.</strong>
+					<form name="form1" id="ff" method="POST" class="text-secondary container">
+						{% csrf_token %}
+						{{ form.as_p }}
+						<button type="submit" class="button1">login</button>
+					</form>
+					<p class="text-center">If you don't have an account, <a href="{% url 'add_address'%}">Sign Up</a> instead.</p>
+					<p class="text-center">If you are manager and you don't have an account, Click <a href="{% url 'add_manager'%}">Here</a> to Sign Up.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</article>
+</div>
+</div>
+</div>
+<div class="body2">
+	<div class="main zerogrid">
+		<article id="content2">
+			<section>
+				<div class="wrapper">
+					<div class="col-1-3"><div class="wrap-col">
+						<h2>Our Contacts</h2>
+						<div class="wrapper pad_bot1">
+							<p>Sed ut perspiciatis unde omnis iunatus doloremque laudantium.</p>
+							<p class="address">
+								Marmora Road, Glasgow, D04 89GR.<br>
+								<span>Freephone:</span>    +1 800 559 6580<br>
+								<span>Telephone:</span>    +1 959 603 6035<br>
+								<span>E-mail:</span>             <a href="mailto:">mail@demolink.org</a>
+							</p>
+						</div>
+					</div></div>
+					<div class="col-2-3"><div class="wrap-col mag-1">	
+						<h2>Miscellaneous Info</h2>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+						</p>
+						Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error.
+					</div></div>
+				</div>
+			</section>
+		</article>
+<!-- / content -->
+	</div>
+</div>
+<div class="body3">
+
+		<div class="main zerogrid">
+<!-- footer -->
+			<footer>
+				<div class="wrapper">
+					<section class="col-2-3"><div class="wrap-col">
+						<h3>Toll Free: <span>1-800 123 45 67</span></h3>
+						Designed by <a rel="nofollow" href="http://www.TemplateMonster.com/" target="_blank">TemplateMonster</a> | <a href="https://www.zerotheme.com" title="free website templates">ZEROTHEME</a>
+					</div></section>
+					<section class="col-1-3"><div class="wrap-col">
+						<h3>Follow Us </h3>
+						<ul id="icons">
+							<li><a href="#" class="normaltip" title="Facebook"><img src="images/icon1.gif" alt=""></a></li>
+							<li><a href="#" class="normaltip" title="Linkedin"><img src="images/icon2.gif" alt=""></a></li>
+							<li><a href="#" class="normaltip" title="Twitter"><img src="images/icon3.gif" alt=""></a></li>
+							<li><a href="#" class="normaltip" title="Delicious"><img src="images/icon4.gif" alt=""></a></li>
+							<li><a href="#" class="normaltip" title="Technorati"><img src="images/icon5.gif" alt=""></a></li>
+						</ul>
+					</div></section>
+				</div>
+				<!-- {%FOOTER_LINK} -->
+			</footer>
+<!-- / footer -->
+		</div>
+
+</div>
+{% endblock content %}
+<script type="text/javascript"> Cufon.now(); </script>
+</body>
+</html>
