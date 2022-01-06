@@ -53,3 +53,11 @@ class Address(models.Model):
     
     def __str__(self):
         return self.state+","+self.city+","+self.street
+
+# class CustomerAddress(models.Model):
+#     address_id = models.ForeignKey(Address,related_name="customer_address",on_delete=models.SET_NULL,null=True)
+#     customer_id = models.ForeignKey(Customer,related_name="customerAddress",on_delete=models.SET_NULL,null=True)
+#     is_main_address = models.BooleanField(default=True)
+
+#     def __str__(self):
+#         return self.address_id+","+self.customer_id

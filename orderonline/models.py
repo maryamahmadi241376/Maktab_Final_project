@@ -5,7 +5,7 @@ import jdatetime
 
 class Order(models.Model):
     customer = models.ForeignKey('accounts.Customer',related_name="customer_order",on_delete=models.SET_NULL, null=True, blank=True)
-    address = models.ForeignKey('accounts.Address',on_delete=models.CASCADE,related_name="orders",null=True)
+    address = models.ForeignKey('accounts.Address',on_delete=models.SET_NULL,related_name="orders",null=True)
     CUSTOMERSTATUS = [('ordered','ordered'),('order_confirmed','order_confirmed'),('is_sending','is_sending'),('delivered','delivered')]
     customer_status = models.CharField(choices=CUSTOMERSTATUS,default="-----",max_length=16)
     delivery_time = models.TimeField(auto_now_add=True)
@@ -34,6 +34,7 @@ class Order(models.Model):
     
     def __str__(self):
         return self.customer_status
+
 
 class Food(models.Model):
     food_name = models.CharField(max_length=200,verbose_name="food_name")
@@ -64,7 +65,7 @@ class MealCategory(models.Model):
 
 class Menu(models.Model):
     food = models.ForeignKey(Food,related_name="food_menu",on_delete=models.SET_NULL,null=True)
-    branch= models.OneToOneField('RestaurantBranch', on_delete=models.CASCADE,related_name="branch_menus")
+    branch= models.ForeignKey('RestaurantBranch', on_delete=models.CASCADE,related_name="branch_menus")
     menu_number = models.IntegerField(validators = [MinValueValidator(1)])
     price = models.IntegerField(validators = [MinValueValidator(20000)])
 

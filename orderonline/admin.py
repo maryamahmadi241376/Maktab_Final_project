@@ -48,7 +48,7 @@ class CustomFood(admin.ModelAdmin):
     fieldsets = (
             (None, {
                 "fields": (
-                    'food_name','food_image','food_category_id','meal',
+                    'food_name','food_image','food_category_id',
                 ),
             }),
             ('personal info', {

@@ -1,4 +1,4 @@
-from accounts.models import Address, RestaurantManager
+from accounts.models import Address
 from orderonline.forms import FoodForm
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -13,7 +13,7 @@ from datetime import datetime
 from django.db.models import Count,Max, Sum
 from .serializers import *
 from .decorator import superuser_required, is_staff_required, customer_required
-
+from django.db.models import Q
 
 # def foodView(req):
 #     foods = Food.objects.all()
@@ -73,29 +73,23 @@ class PostFoodCategoryCreate(CreateView):
     fields = "__all__"   
 
 
-# # def cart(request,pk):
-# # 	# try:
-# # 	    # customer = request.customer
-# # 	# except:
-# # 	# 	device = request.COOKIES['device']
-# # 	# 	customer, created = Customer.objects.get_or_create(device=device)
-
-# #     # order, created = Order.objects.get_or_create(customer=customer, customer_status=False,order_number=1,branch=1,order_item=None,delivery_time=timezone.now(),order_date=datetime.now(),total_price=20000)
-# #     food = get_object_or_404(Food,pk=pk)
-# #     orderitem, created = OrderItem.objects.get_or_create(food=food)
-# #     order_qs = Order.objects.filter(customer=request.user, customer_status=False)
-# #     if order_qs.exists():
-# #         order = order_qs[0]
-# #         #check order item
-# #         if order.order_item.filter(food__id=food.id).exists():
-# #             orderitem.number += 1
-# #             orderitem.save()
-# #         else:
-# #             order.order_item.add(orderitem)
-# #     else:
-# #         order = Order.objects.create(customer=request.user,delivery_time=timezone.now(),order_date=datetime.now())
-# #         order.items.add(orderitem)
-# #     return reverse_lazy('home')
+# def cart(request,pk):
+	
+#     food = get_object_or_404(Food,pk=pk)
+#     orderitem, created = OrderItem.objects.get_or_create(food=food)
+#     order_qs = Order.objects.filter(customer=request.user, customer_status=False)
+#     if order_qs.exists():
+#         order = order_qs[0]
+#         #check order item
+#         if order.order_item.filter(food__id=food.id).exists():
+#             orderitem.number += 1
+#             orderitem.save()
+#         else:
+#             order.order_item.add(orderitem)
+#     else:
+#         order = Order.objects.create(customer=request.user,delivery_time=timezone.now(),order_date=datetime.now())
+#         order.items.add(orderitem)
+#     return reverse_lazy('home')
 
 
 def food(request,pk):  
@@ -110,7 +104,7 @@ def food(request,pk):
             customer, created = Customer.objects.get_or_create(device=device,username=device)
 
         menu = (Menu.objects.all().filter(id = pk).values_list('menu_number').last())[0]
-        if menu >= int(request.POST['number']):
+        if menu >= int(request.POST['number']):  #موجودی انبار
             order, created = Order.objects.get_or_create(customer=customer, customer_status='ordered',total_price=1000)
             orderItem, created = OrderItem.objects.get_or_create(order=order, menu=menus,number=request.POST['number'])
             orderItem.number =request.POST['number']
@@ -125,16 +119,21 @@ def food(request,pk):
 
 
 def cart(request):
-    # customer = request.user.customer
-    if request.method =="POST":
-        print(request.user)
-        if request.customer.username:
-            branch_orderitem = RestaurantBranch.objects.filter(branch_menus__orderitems__order__customer= request.customer.username)
-            orderitems = OrderItem.objects.all().filter(order__customer=request.customer.username)
-            total_price = sum([item.get_total for item in orderitems])
-            
-            branch_order = Order.objects.get_or_create(customer=request.customer.username,customer_status="order_confirmed",branch=branch_orderitem)
-            
+    # if request.method =="POST":
+    #     if request.user:
+    #         orderitems = OrderItem.objects.all().filter(order__customer__email=request.user)
+    #         total_price = sum([item.get_total for item in orderitems])
+
+    #         branch_orderitem = RestaurantBranch.objects.filter(branch_menus__orderitems__order__customer__email= request.user)
+    #         branch_address = CustomerAddress.objects.filter(customer_id=request.user.id)
+
+    #         branch_order = Order.objects.get(customer_status = "ordered")
+
+    #         branch_order.branch = branch_orderitem
+    #         branch_order.total_price = total_price
+    #         branch_order.customer_status = "order_confirmed"
+    #         branch_order.address = branch_address
+    #         branch_order.save()
 
     try:
         customer = request.user.customer
@@ -163,6 +162,11 @@ class OrderItemDeleteView(DeleteView):
     success_url = reverse_lazy("home")
     fields = "__all__"
 
+# class AddressView(CreateView):
+#     model = Address
+#     template_name = "choose_address.html"
+#     success_url = reverse_lazy('cart')
+#     fields= "__all__"
 
 # # def most_selling_foods(req):
    
@@ -176,11 +180,5 @@ class OrderItemDeleteView(DeleteView):
 #     # best_foods = dict(sorted(my_dict.items(), key=lambda item: item[1]))
 
 
-#     # best_branchs = Branch.objects.filter(foods__foodmenu__order_id__status='Peyment').annotate(sums =Sum("foods__foodmenu__order_id__total_price") ).order_by("-sums")[:3]
-#     # values = Food.objects.all().filter(food__foodmenu__order_id__status = "Peyment").annotate(our_sum=Sum("food__foodmenu__number")).order_by("-our_sum")[:3]
 
-# class AddressView(CreateView):
-#     model = Address
-#     template_name = "choose_address.html"
-#     success_url = reverse_lazy('cart')
-#     fields= "__all__"
+
