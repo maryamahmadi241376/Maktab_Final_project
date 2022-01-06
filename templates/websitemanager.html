@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="contact_form">
+    <form id="food_form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% comment %} {% for field in form %} {% endcomment %}
+        <div class="col-sm-12">
+            <div class=" form-group col-10 text-white">
+            {{form.as_p}}
+            {% comment %} <label class="col-12">{{ field.label }}</label> {% endcomment %}
+                {% comment %} {{ field }} {% endcomment %}
+            </div>
+            {% comment %} {% endfor %} {% endcomment %}
+            </div>
+        </div>
+        <input id="button" class="sendButton m-5 p-3" type="submit" name="add_food" value='Add Food'>
+    </form>
+{% endblock content %}
+
+{% comment %} {% block js %}
+<script>
+$('#food_form').submit(function(e){  
+    e.preventDefault(); 
+    Data = $(this).serialize();     
+    console.log('data:',Data)
+    data = {'food':Data,csrfmiddlewaretoken: "{{csrf_token}}"}
+    $.ajax({
+        type: "POST",
+        url: "{% url 'add_food' %}",
+        data: data,
+        dataType: "json",
+        success: function(data){
+            console.log(data)
+            //for(var i=0;i<=data.length;i++){
+               // var row=$(
+                   // "<div><h2 class='letter_spacing'>"+data[i].food_name+"<span></span></h2>"+"<figure><img src="+data[i].food_image+"alt=''></figure>"+
+                      //  +"<p class='pad_bot1'>"+data[i].food_description+"</p>"+
+                     //   "<a href='#' class='button1'>Delete</a>"+"<a href='#' class='button1'>Edit</a></div>"
+                //)
+                //$("#my-foods").preppend(row);
+                //console.alert('success')
+            //}
+        },
+        failure: function(errMsg) {
+            alert(errMsg);
+        }
+    });
+
+});
+</script>
+{% endblock js %}
+ {% endcomment %}

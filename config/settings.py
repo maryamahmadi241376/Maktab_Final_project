@@ -38,10 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'crispy_forms',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     'accounts',
     'orderonline',
+    'rest_framework'
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomUser' 
@@ -61,7 +64,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR/'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -135,8 +138,9 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# LOGIN_REDIRECT_URL = 'home'
-# ACCOUNT_LOGOUT_REDIRECT = 'home'
+LOGIN_REDIRECT_URL = 'home'
+ACCOUNT_LOGOUT_REDIRECT = 'home'
+
 SITE_ID = 1
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -152,3 +156,7 @@ ACCOUNT_UNIQUE_EMAIL = True
 
 MEDIA_ROOT = BASE_DIR/'media/'
 MEDIA_URL = '/media/'
+
+STATIC_ROOT = 'assets'
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
