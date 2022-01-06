@@ -159,7 +159,7 @@ def cart(request):
 class OrderItemDeleteView(DeleteView):
     model = OrderItem
     template_name = "delete_food.html"
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("add_to_cart")
     fields = "__all__"
 
 # class AddressView(CreateView):
