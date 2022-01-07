@@ -76,7 +76,7 @@ class Menu(models.Model):
 
 class OrderItem(models.Model):   #middle table
     order = models.ForeignKey(Order,related_name="order_items",on_delete=models.SET_NULL,null=True)
-    number = models.IntegerField(validators = [MinValueValidator(1)])
+    number = models.IntegerField(validators = [MinValueValidator(1)],null=True)
     menu = models.ForeignKey(Menu, related_name='orderitems', on_delete=models.SET_NULL,null=True)
 
     @property

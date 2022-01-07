@@ -92,30 +92,110 @@ class PostFoodCategoryCreate(CreateView):
 #     return reverse_lazy('home')
 
 
+# def food(request,pk):  
+#     menus = Menu.objects.get(id = pk)
+#     food = Food.objects.get(food_menu__id = pk)
+#     if request.method == 'POST':
+#         #Get user account information
+#         try:
+#             customer = request.user.customer
+#         except:
+#             device = request.COOKIES['device']
+#             customer, created = Customer.objects.get_or_create(device=device,username=device)
+
+#         menu = (Menu.objects.all().filter(id = pk).values_list('menu_number').last())[0]
+#         if menu >= int(request.POST['number']):  #موجودی انبار
+#             order, created = Order.objects.get_or_create(customer=customer, customer_status='ordered',total_price=1000)
+#             orderItem, created = OrderItem.objects.get_or_create(order=order, menu=menus,number=request.POST['number'])
+#             orderItem.number =request.POST['number']
+#             orderItem.save()
+#             return redirect('add_to_cart')
+#         else:
+#             context = {'menus':menus, "food":food ,'msg':"not enough foods"}
+#             return render(request, 'order_detail.html', context)
+
+#     context = {'menus':menus, "food":food }
+#     return render(request, 'order_detail.html', context)
+
+
+# def cart(request):
+#     # if request.method =="POST":
+#     #     if request.user:
+#     #         orderitems = OrderItem.objects.all().filter(order__customer__email=request.user)
+#     #         total_price = sum([item.get_total for item in orderitems])
+
+#     #         branch_orderitem = RestaurantBranch.objects.filter(branch_menus__orderitems__order__customer__email= request.user)
+#     #         branch_address = CustomerAddress.objects.filter(customer_id=request.user.id)
+
+#     #         branch_order = Order.objects.get(customer_status = "ordered")
+
+#     #         branch_order.branch = branch_orderitem
+#     #         branch_order.total_price = total_price
+#     #         branch_order.customer_status = "order_confirmed"
+#     #         branch_order.address = branch_address
+#     #         branch_order.save()
+
+#     try:
+#         customer = request.user.customer
+#         customer_address = Address.objects.filter(customer__username = customer.username)
+
+#         device = request.COOKIES['device']
+#         orderitems=OrderItem.objects.filter(order__customer__username=customer.username)
+#         food = Food.objects.filter(food_menu__orderitems__order__customer__username=customer.username)
+#         orders = Order.objects.filter(customer__username=customer.username)
+
+#     except:
+#         device = request.COOKIES['device']
+#         orderitems=OrderItem.objects.filter(order__customer__username=device)
+#         food = Food.objects.filter(food_menu__orderitems__order__customer__username=device)
+#         orders = Order.objects.filter(customer__username=device) 
+#         customer, created = Customer.objects.get_or_create(device=device ,username = device)
+        
+
+#     context = {'orders':orders,"orderitems": orderitems,"food":food}
+#     return render(request, 'cart.html', context)
+
 def food(request,pk):  
     menus = Menu.objects.get(id = pk)
     food = Food.objects.get(food_menu__id = pk)
     if request.method == 'POST':
         #Get user account information
         try:
-            customer = request.user.customer
+            customer = request.user.email
+            device = request.COOKIES['device']
+            ex_customer = Customer.objects.get(device = device)
+            ex_customer.email = customer
+            ex_customer.device = device
+            ex_customer.save()
+            customer = ex_customer
         except:
             device = request.COOKIES['device']
-            customer, created = Customer.objects.get_or_create(device=device,username=device)
+            customer, created = Customer.objects.get_or_create(username=device,email=device+"@gmail.com",device=device)
+        if Order.objects.filter(customer=customer).filter(customer_status="ordered"):
+            if (Menu.objects.filter(id = pk).values_list("branch__restaurant_branch_name").last())[0] == Menu.objects.filter(orderitems__order__customer_status="ordered").filter(orderitems__order__customer=customer).values_list("branch__restaurant_branch_name").first()[0]:
+                if ((Menu.objects.filter(id = pk).values_list('menu_number').last())[0]) >= int(request.POST['number']):  #موجودی انبار
+                    order, created = Order.objects.get_or_create(customer=customer, customer_status='ordered')
+                    orderItem, created = OrderItem.objects.get_or_create(order=order, menu=menus)
+                    orderItem.number =request.POST['number']
+                    orderItem.save()
+                    return redirect('add_to_cart')
+                else:
+                    context = {'menus':menus, "food":food ,'msg':"not enough foods"}
+                    return render(request, 'order_detail.html', context)
 
-        menu = (Menu.objects.all().filter(id = pk).values_list('menu_number').last())[0]
-        if menu >= int(request.POST['number']):  #موجودی انبار
-            order, created = Order.objects.get_or_create(customer=customer, customer_status='ordered',total_price=1000)
-            orderItem, created = OrderItem.objects.get_or_create(order=order, menu=menus,number=request.POST['number'])
-            orderItem.number =request.POST['number']
-            orderItem.save()
-            return redirect('add_to_cart')
+            else:
+                return render(request, 'order_detail.html', {'menus':menus, "food":food ,'msg':"you should remove current orders."})
         else:
-            context = {'menus':menus, "food":food ,'msg':"not enough foods"}
-            return render(request, 'order_detail.html', context)
 
-    context = {'menus':menus, "food":food }
-    return render(request, 'order_detail.html', context)
+            if (Menu.objects.all().filter(id = pk).values_list('menu_number').last())[0]>= int(request.POST['number']):
+                order, created = Order.objects.get_or_create(customer=customer, customer_status='ordered')
+                orderItem, created = OrderItem.objects.get_or_create(order=order, menu=menus)
+                orderItem.number =request.POST['number']
+                orderItem.save()
+                return redirect('add_to_cart')
+            else:
+                return render(request, 'order_detail.html', {'menus':menus, "food":food ,'msg':"not enough!"})
+    return render(request, 'order_detail.html', {'menus':menus, "food":food })
 
 
 def cart(request):
@@ -136,24 +216,24 @@ def cart(request):
     #         branch_order.save()
 
     try:
-        customer = request.user.customer
-        customer_address = Address.objects.filter(customer__username = customer.username)
+        customer = request.user.device
+        customer_address = Address.objects.filter(customer__email=customer)
 
         device = request.COOKIES['device']
-        orderitems=OrderItem.objects.filter(order__customer__username=customer.username)
-        food = Food.objects.filter(food_menu__orderitems__order__customer__username=customer.username)
-        orders = Order.objects.filter(customer__username=customer.username)
+        orderitems=OrderItem.objects.filter(order__customer__email=customer).filter(order__customer_status = "ordered")
+        food = Food.objects.filter(food_menu__orderitems__order__customer__email=customer)
+        orders = Order.objects.filter(customer__email=customer).filter(customer_status = "ordered")
 
     except:
         device = request.COOKIES['device']
-        orderitems=OrderItem.objects.filter(order__customer__username=device)
-        food = Food.objects.filter(food_menu__orderitems__order__customer__username=device)
-        orders = Order.objects.filter(customer__username=device) 
-        customer, created = Customer.objects.get_or_create(device=device ,username = device)
-        
+        customer = device
+        orderitems=OrderItem.objects.filter(order__customer__device=customer)
+        food = Food.objects.filter(food_menu__orderitems__order__customer__device=customer)
+        orders = Order.objects.filter(customer__device=customer).filter(customer_status = "ordered")
+        # customer, created = Customer.objects.get_or_create(device=device ,username = device)
+        customer_address = Address.objects.filter(customer__device=customer)
 
-    context = {'orders':orders,"orderitems": orderitems,"food":food}
-    return render(request, 'cart.html', context)
+    return render(request, 'cart.html', {'orders':orders,"orderitems": orderitems,"food":food,"customer_address":customer_address})
 
 
 class OrderItemDeleteView(DeleteView):

@@ -45,7 +45,7 @@
 			<p class="pad_bot1">Number : {{i.number}}</p>
 			<p class="pad_bot1">Total Price : {{i.get_total}}</p>
 			<p class="pad_bot1">Order Status : {{i.order.customer_status}}</p>
-			<p class="pad_bot1">Order Status : {{i.order.created_at_jalali.date}}</p>
+			<p class="pad_bot1">Order Date : {{i.order.created_at_jalali.date}}</p>
 
 			<a href="{%url 'delete_orderitem' i.id %}" class="button1">Remove</a>
 			{% comment %} <a href="#" class="button1">Confirm</a> {% endcomment %}
