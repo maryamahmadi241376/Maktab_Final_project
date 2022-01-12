@@ -17,10 +17,28 @@
 						<th><h5>Total:<strong> ${{order.get_cart_total|floatformat:2}}</strong></h5></th>
 						<th>
 							{%if user.is_authenticated%}
+
 							<form method="POST">
 								{% csrf_token %}
-								
-								<input class="btn btn-secondary" type="submit" value="CheckOut">
+								<div class="dropdown">
+									<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									  Dropdown button
+									</button>
+									<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+									  {% comment %} <a class="dropdown-item" href="#"> {% endcomment %}
+										<select name="cart_address" id="validationDefault05" required >
+										{% for address in customer_address %}
+										<option value="{{address.id}}" >{{address.address_id.state}},{{address.address_id.city}},{{address.address_id.street}},{{address.address_id.plaque}}</option>
+										{% endfor %}
+									</select></a>
+		
+									 
+									</div>
+								  </div>
+								  <a class="dropdown-item btn btn-warning" href="{% url 'addaddress' %}">Add Address</a>
+							<button class="btn btn-secondary" name="" type="submit">CheckOut</button>
+							
+							
 							</form>
 							{%else%}
 							<a href="{% url 'account_login' %}" type="button" class="btn btn-dark">login</a>
@@ -74,3 +92,14 @@
 	<h1 style="text-align:center;padding: 100px">No Items in cart</h1>
 	{% endif %}
 {% endblock content %}
+{% comment %} {%block script%}
+<script>
+	var counter=0;
+	function myFunction() {
+		//increment counter
+		counter+=1;
+		if(counter>2)
+			document.getElementById("pak").style.visibility = "show"
+	}
+	</script>
+	{%endblock script%} {% endcomment %}
