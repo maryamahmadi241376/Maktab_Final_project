@@ -21,8 +21,7 @@
 <form method="POST" action="{% url 'order_detail' menus.id %}" class="text-dark">
 	{% csrf_token %}
 	<input min="1" value=1 type="number" name="number" class="m-2">
-	{% comment %} <a href="{% url 'add_to_cart' %}" class="button1 m-2" type="submit">Add To Cart</a> {% endcomment %}
-	<button class="btn btn-dark ml-5" type="submit">Add to Cart</button>
+	<button id="add" class="btn btn-dark ml-5" type="submit">Add to Cart</button>
 
 </form>
 
@@ -34,3 +33,46 @@
 </article>
 
 {%endblock content%}
+{% block script %}
+<script>
+$(document).ready(function(){
+    localItems = JSON.parse(localStorage.getItem('localItems'));
+    if (localItems){
+        localItems.forEach(function (item) {
+            $("#my-foods").append("<h2 class='letter_spacing'>"+item.food.food_name+"<span></span></h2>"+
+			"<figure><img src="+item.food.food_image.url+"></figure>"+
+			"<p class='pad_bot1'>"+item.food.food_description+"</p>"+
+			"<h2 class='letter_spacing'>price : <span>"+item.menus.price+"</span></h2>"+
+			"<h2 class='letter_spacing'>Restaurant : <span>"+item.menus.branch.restaurant_branch_name+"</span></h2>")
+        })
+    }
+    $("#add").click(function(){
+        var i = $("#my-foods").val().trim();
+
+        if (item != ''){
+            let localItems;
+            localItems = [];
+            if(localStorage.getItem('localItems') === null){
+                localItems = [];
+            }else{
+                localItems = JSON.parse(localStorage.getItem('localItems'));
+            }
+            localItems.push(item);
+            console.log(item);
+
+            localStorage.setItem('localItems', JSON.stringify(localItems));
+
+            $("#my-foods").append("<h2 class='letter_spacing'>"+item.food.food_name+"<span></span></h2>"+
+			"<figure><img src="+item.food.food_image.url+"></figure>"+
+			"<p class='pad_bot1'>"+item.food.food_description+"</p>"+
+			"<h2 class='letter_spacing'>price : <span>"+item.menus.price+"</span></h2>"+
+			"<h2 class='letter_spacing'>Restaurant : <span>"+item.menus.branch.restaurant_branch_name+"</span></h2>")
+
+        }else{
+            alert("please enter something to add")
+        }
+        
+    })
+})
+</script>
+{% endblock script %}
