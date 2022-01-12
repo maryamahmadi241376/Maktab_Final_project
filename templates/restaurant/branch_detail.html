@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+       
+
+<article id="content" class="col-8">
+	<div class="wrap">
+<section class="col-1-3"><div class="wrap-col">
+<div class="box">
+<div id="my-foods">
+<h2 class="letter_spacing">{{branch_detail.food_category.food_category_name}}<span></span></h2>
+{% comment %} <figure><img src="{{food.food_image.url}}" alt="" ></figure> {% endcomment %}
+<p class="pad_bot1">{{branch_detail.restaurant_branch_name}}</p>
+<h2 class="letter_spacing">price : <span>{{menus.price}}</span></h2>
+<h2 class="letter_spacing">Restaurant : <span>{{menus.branch.restaurant_branch_name}}</span></h2>
+{%if msg%}
+<h1>{{msg}}</h1>
+{%endif%}
+
+<form method="POST" action="{% url 'order_detail' menus.id %}" class="text-dark">
+	{% csrf_token %}
+	<input min="1" value=1 type="number" name="number" class="m-2">
+	{% comment %} <a href="{% url 'add_to_cart' %}" class="button1 m-2" type="submit">Add To Cart</a> {% endcomment %}
+	<button class="btn btn-dark ml-5" type="submit">Add to Cart</button>
+
+</form>
+
+
+</div>
+</div></section>
+
+</div>
+</article>
+
+{%endblock content%}
