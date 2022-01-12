@@ -5,7 +5,7 @@ import jdatetime
 
 class Order(models.Model):
     customer = models.ForeignKey('accounts.Customer',related_name="customer_order",on_delete=models.SET_NULL, null=True, blank=True)
-    address = models.ForeignKey('accounts.Address',on_delete=models.SET_NULL,related_name="orders",null=True)
+    address = models.ForeignKey('accounts.CustomerAddress',on_delete=models.SET_NULL,related_name="orders",null=True)
     CUSTOMERSTATUS = [('ordered','ordered'),('order_confirmed','order_confirmed'),('is_sending','is_sending'),('delivered','delivered')]
     customer_status = models.CharField(choices=CUSTOMERSTATUS,default="-----",max_length=16)
     delivery_time = models.TimeField(auto_now_add=True)
@@ -99,10 +99,10 @@ class Restaurant(models.Model):
 
 
 class RestaurantBranch(models.Model):
-    food_category = models.OneToOneField(FoodCategory,on_delete=models.CASCADE,related_name='branch')
+    food_category = models.ForeignKey(FoodCategory,on_delete=models.CASCADE,related_name='branch')
     restaurant_id = models.ForeignKey(Restaurant,on_delete=models.CASCADE,related_name="restaurant_branchs")
     restaurant_branch_name = models.CharField(max_length=200,verbose_name="restaurant_branch_name")
-    address = models.OneToOneField('accounts.Address',on_delete=models.CASCADE,related_name='restaurantbranchs')
+    address = models.CharField(max_length=150)
     restaurant_branch_description = models.TextField(max_length=1000,default="",verbose_name="restaurant_branch_description",blank=True,null=True)
     restaurant_branch_created_date = models.DateField(auto_now_add=True)
     restaurant_branch_status = models.BooleanField('active',default=True)
