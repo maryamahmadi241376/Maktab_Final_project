@@ -31,8 +31,7 @@ class RestaurantManager(CustomUser):
         super(RestaurantManager,self).save(*args, **kwargs)
 
 class Customer(CustomUser):
-    address = models.ManyToManyField('Address',related_name='customer')
-    customer_status = models.BooleanField('block',default=False)
+    address = models.ManyToManyField('Address',through="CustomerAddress",related_name='customer')
     device = models.CharField(max_length=200, null=True, blank=True)
 
     class Meta:
@@ -45,7 +44,6 @@ class Customer(CustomUser):
         super(Customer,self).save(*args, **kwargs)
 
 class Address(models.Model):
-    is_main_address = models.BooleanField(default=True)
     state = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
     street = models.CharField(max_length=30)
@@ -54,10 +52,10 @@ class Address(models.Model):
     def __str__(self):
         return self.state+","+self.city+","+self.street
 
-# class CustomerAddress(models.Model):
-#     address_id = models.ForeignKey(Address,related_name="customer_address",on_delete=models.SET_NULL,null=True)
-#     customer_id = models.ForeignKey(Customer,related_name="customerAddress",on_delete=models.SET_NULL,null=True)
-#     is_main_address = models.BooleanField(default=True)
+class CustomerAddress(models.Model):
+    address_id = models.ForeignKey(Address,related_name="customer_address",on_delete=models.SET_NULL,null=True)
+    customer_id = models.ForeignKey(Customer,related_name="customerAddress",on_delete=models.SET_NULL,null=True)
+    is_main_address = models.BooleanField(default=True)
 
-#     def __str__(self):
-#         return self.address_id+","+self.customer_id
+    def __str__(self):
+        return str(self.is_main_address)
