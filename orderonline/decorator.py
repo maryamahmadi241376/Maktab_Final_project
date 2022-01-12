@@ -1,6 +1,4 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.views.generic import View
-
 
 def superuser_required():
     def wrapper(wrapped):
