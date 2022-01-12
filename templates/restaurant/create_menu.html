@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="contact_form">
+    <form id="food_form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% comment %} {% for field in form %} {% endcomment %}
+        <div class="col-sm-12">
+            <div class=" form-group col-10 text-white">
+            {{form.as_p}}
+            {% comment %} <label class="col-12">{{ field.label }}</label> {% endcomment %}
+                {% comment %} {{ field }} {% endcomment %}
+            </div>
+            {% comment %} {% endfor %} {% endcomment %}
+            </div>
+        </div>
+        <input id="button" class="sendButton m-5 p-3" type="submit" name="create_menu" value='Add Menu'>
+    </form>
+    <a type="submit" href="{%url 'restaurant_panel'%}">Later</a>
+{% endblock content %}
