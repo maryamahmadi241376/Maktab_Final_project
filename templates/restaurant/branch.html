@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block nav %}
+
+    {% if user.is_authenticated and user.is_staff%}
+    <li><a style="font-size:20px;" href="{% url 'create_menu' %}">Add Menu</a></li>
+    <li><a style="font-size:20px;" href="{% url 'branch_edit' branchs.id %}">Edit Branch</a></li>
+    <li><a style="font-size:20px;" href="{% url 'manager_edit' manager.id %}">Edit Manager</a></li>
+
+
+    {% endif %}
+
+{% endblock nav %}
+{% block content %}
+
+<h2> Menus </h2>
+<article id="content" class="col-11">
+	<div class="wrap">
+{% for m in manager_menus %}
+{% if user.is_authenticated and user.is_staff%}
+<section class="col-1-3"><div class="wrap-col">
+<div class="box">
+<div id="my-foods">
+<h2 class="letter_spacing">{{m.food.food_name}}<span></span></h2>
+<figure><img src="{{m.food.food_image.url}}" alt="" ></figure>
+<p class="pad_bot1">Number : {{m.menu_number}}</p>
+<p class"letter_spacing">Price : <span>{{m.price}}</span></p>
+{% comment %} <p class"letter_spacing">Category : <span>{{m.food_category_id.food_category_name}}</span></p> {% endcomment %}
+
+<a href="{% url 'delete_menu' m.id %}" class="button1">Delete</a>
+<a href="{% url 'edit_menu' m.id %}" class="button1">Edit</a>
+{%endif%}
+
+</div>
+</div></section>
+
+{%endfor%}  
+</div>
+</article>
+
+<h2> Orders history </h2>
+<article id="content" class="col-11">
+	<div class="wrap">
+{% for o in orders %}
+{% if user.is_authenticated and user.is_staff%}
+<section class="col-1-3"><div class="wrap-col">
+<div class="box">
+<div id="my-foods">
+<h2 class="letter_spacing">{{o.order_items.menu.food.food_name}}<span></span></h2>
+<h2 class="letter_spacing">{{o.customer.username}}<span></span></h2>
+<p class="pad_bot1">Status : {{o.customer_status}}</p>
+<p class"letter_spacing">Price : <span>{{o.total_price}}</span></p>
+<p class"letter_spacing">Date : <span>{{o.order_date}}</span></p>
+
+{%endif%}
+
+</div>
+</div></section>
+
+{%endfor%}  
+</div>
+</article>
+
+{%endblock content%}
