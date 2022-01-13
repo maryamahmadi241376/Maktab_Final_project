@@ -7,7 +7,6 @@
         {% csrf_token %}
         {{ form.as_p }}
         <div>
-        {% comment %} <input class="sendButton btn btn-success" type="submit" value="website Manager"> {% endcomment %}
         <input class="sendButton btn btn-primary" type="submit"  value="Manager Sign Up">
         </div>
     <p class="text-center">If you already have an account, <a href="{% url 'account_login'%}">login</a> instead.</p>
