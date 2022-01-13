@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import *
 
+admin.site.register(CustomerAddress)
+
 @admin.register(CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
     model = CustomUser
@@ -93,7 +95,7 @@ class CustomCustomer(admin.ModelAdmin):
 @admin.register(Address)
 class CustomAddress(admin.ModelAdmin):
     model = Address
-    list_display = ['state','city','street']
+    list_display = ['state','city','street','id']
     list_editable = ['street',]
     empty_value_display = 'is null'
     list_filter = ['state','city','street',]
