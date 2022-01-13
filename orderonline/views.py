@@ -15,14 +15,14 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-def search(request):
-    results=[]
-    if request.method == 'GET':
-        data = request.GET.get('search')
-        # if data == '':
-        #     data = 'None'
-        results = Menu.objects.filter(Q(food__food_name__icontains=data) | Q(branch__restaurant_branch_name__icontains=data))   
-    return render(request,"search/search.html",{'data':data,'results':results})
+# def search(request):
+#     results=[]
+#     if request.method == 'GET':
+#         data = request.GET.get('search')
+#         # if data == '':
+#         #     data = 'None'
+#         results = Menu.objects.filter(Q(food__food_name__icontains=data) | Q(branch__restaurant_branch_name__icontains=data))   
+#     return render(request,"search/search.html",{'data':data,'results':results})
 
 @superuser_required()
 class FoodView(LoginRequiredMixin,TemplateView):
@@ -42,6 +42,14 @@ def show_foods(req):
     most_seller_foods = Food.objects.all().filter(food_menu__orderitems__order__customer_status = "order_confirmed").annotate(sum_number=Sum("food_menu__orderitems__number")).order_by("-sum_number")[:10]
 
     return render(req, "home.html", {"foods": foods,"menus":menus,'most_seller_foods':most_seller_foods,'most_seller_restaurant':most_seller_restaurant})
+
+class MostSellerRestaurant(TemplateView):
+    template_name = "restaurant/branch_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['most_seller_restaurants'] = RestaurantBranch.objects.filter(branch_menus__orderitems__order__customer_status = "order_confirmed").annotate(sum_totalprice=Sum("branch_menus__orderitems__order__total_price")).order_by("-sum_totalprice")[:10]
+        return context
 
 @superuser_required()
 class FoodCreate(CreateView):
@@ -216,16 +224,15 @@ class MenuDelete(DeleteView):
     fields = "__all__"
 
 class BranchList(ListView):
-    contecxt_object_name = "branchs"
+    # contecxt_object_name = "branchs"
     model = RestaurantBranch
-    template_name = "home.html"
-    fields = "__all__"
+    template_name = "restaurant/restaurant.html"
 
 class BranchDetail(DetailView):
-    contecxt_object_name = "branch_detail"
     model = RestaurantBranch
+    queryset = RestaurantBranch.objects.all()
     template_name = "restaurant/branch_detail.html"
-    fields = "__all__"
+
 
 class CustomerOrders(LoginRequiredMixin,TemplateView):
     template_name = "customer/customer_panel.html"
@@ -236,3 +243,31 @@ class CustomerOrders(LoginRequiredMixin,TemplateView):
         context['orders'] = Order.objects.filter(customer__username=self.request.user.username)
         return context
         
+def search_result(req):
+    if req.is_ajax():
+        res = None
+        result = req.POST.get('data')
+        q = Menu.objects.filter(Q(food__food_name__icontains=result) | Q(branch__restaurant_branch_name__icontains=result))
+        if len(q) > 0 and len(result) > 0:
+            data =[]
+            for i in q:
+                item ={
+                    'pk' : i.pk,
+                    'food':{'food_name':i.food.food_name, 'img':i.food.food_image.url},
+                    'menu': {'branch_name':i.branch.restaurant_branch_name, 'category':i.branch.food_category.food_category_name},
+                    'price': i.price,
+                    'menu_number': i.menu_number
+                }
+                data.append(item)
+            res = data
+        else:
+            res = "No Food Or Restaurant Found..."
+
+        return JsonResponse({'dataa':res})
+    return JsonResponse({})
+
+
+
+def get_info_search(req, pk):
+    obj = get_object_or_404(Menu, pk=pk)
+    return render(req, 'search/search.html', {'obj':obj})

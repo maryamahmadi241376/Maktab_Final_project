@@ -26,9 +26,15 @@ urlpatterns=[
     path("delete_menu/<int:pk>/",MenuDelete.as_view(),name="delete_menu"),
     path("edit_menu/<int:pk>/",MenuUpdate.as_view(),name="edit_menu"),
 
+    #branch
+    path('branch_list/',BranchList.as_view(),name="branch_list"),
+    path('branch_detail/<int:pk>',BranchDetail.as_view(),name="branchdetail"),
+    path('branch_detail/', MostSellerRestaurant.as_view(),name="branch_detail"),
+
 
     # search
-    path('search/',search,name="search"),
+    path('<int:pk>/',get_info_search,name="get_search"),
+    path('search/',search_result,name="search"),
 
 
     #customer

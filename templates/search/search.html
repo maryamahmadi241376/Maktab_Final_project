@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <a href="{% url 'home' %}" class="btn btn-primary  mb-2" style="margin-top: 10px">Back</a>
+    <h2 class="text-white m-5">Foods</h2>
+    <article id="content">
+        <div class="container">
+        <div class="wrap">      
+    <section class="col-1-3"><div class="wrap-col"> 
+    <div class="box">
+    <div id="my-foods">  
+    <h2 class="letter_spacing">{{obj.food.food_name}}<span></span></h2>
+    <figure><img src="{{obj.food.food_image.url}}" alt="" ></figure>
+    <p class="pad_bot1">Restaurant : {{obj.branch.restaurant_branch_name}}</p>
+    <a href="{% url 'order_detail' obj.id %}" class="button1">Details</a>
+    </div>
+    </div>
+    </section>
+    </div>
+    </div>
+    </article>
+    
+    <h2 class="text-white m-5">Restaurants</h2>
+    <article id="content">
+        <div class="container">
+        <div class="wrap">      
+    <section class="col-1-3"><div class="wrap-col"> 
+    <div class="box">
+    <div id="my-foods">  
+    <h2 class="letter_spacing">{{obj.branch.restaurant_branch_name}}<span></span></h2>
+    <p class="pad_bot1">{{obj.branch.manager.username}}</p>
+    <a href="{% url 'restaurant_panel' %}" class="button1">Details</a>
+    </div>
+    </div>
+    </section>
+    </div>
+    </div>
+    </article>
+
+
+
+
+{% comment %} {%if data%}
+{%for i in results%}
+<h2 class="text-white m-5">Foods</h2>
+<article id="content">
+    <div class="container">
+	<div class="wrap">      
+<section class="col-1-3"><div class="wrap-col"> 
+<div class="box">
+<div id="my-foods">  
+<h2 class="letter_spacing">{{i.food.food_name}}<span></span></h2>
+<figure><img src="{{i.food.food_image.url}}" alt="" ></figure>
+<p class="pad_bot1">Restaurant : {{i.branch.restaurant_branch_name}}</p>
+<a href="{% url 'order_detail' i.id %}" class="button1">Details</a>
+</div>
+</div>
+</section>
+</div>
+</div>
+</article>
+
+<h2 class="text-white m-5">Restaurants</h2>
+<article id="content">
+    <div class="container">
+	<div class="wrap">      
+<section class="col-1-3"><div class="wrap-col"> 
+<div class="box">
+<div id="my-foods">  
+<h2 class="letter_spacing">{{i.branch.restaurant_branch_name}}<span></span></h2>
+<p class="pad_bot1">{{i.branch.manager.username}}</p>
+<a href="{% url 'restaurant_panel' %}" class="button1">Details</a>
+</div>
+</div>
+</section>
+</div>
+</div>
+</article>
+{% endfor %}
+{% endif %} {% endcomment %}
+
+
+
+
+
+
+
+
+
+
+{% endblock content %}

@@ -13,8 +13,7 @@
 <link rel="stylesheet" href="{% static 'css/zerogrid.css'%}" type="text/css" media="all">
 <link rel="stylesheet" href="{% static 'css/responsive.css'%}" type="text/css" media="all"> 
 <link rel="stylesheet" href="{% static 'css/contactform.css'%}" type="text/css" media="all">
-{% comment %} <link rel="stylesheet" href="{% static 'css/main.js'%}"> {% endcomment %}
-
+{% block link %}{% endblock link %}
 </head>
 <body id="page5">
 <div class="body6">
@@ -38,7 +37,7 @@
 						<li><a style="font-size:20px;" href="{% url 'add_customer' %}">Customers SignUp</a></li>
 						<li><a style="font-size:20px;" href="{% url 'customer_panel' %}">Customers Panel</a></li>
 
-						<li class="active"><a style="font-size:20px;" href="#">Restaurants</a></li>
+						<li class="active"><a style="font-size:20px;" href="{% url 'branch_list' %}">Restaurants</a></li>
 						{% block nav %}{% endblock nav %}
 
 					</ul>
@@ -49,11 +48,11 @@
 			</header>
 			
 			<main>
-				<form method="GET" action="{% url 'search' %}">
+				{% comment %} <form method="GET" action="{% url 'search' %}">
 					{% csrf_token %}
 					<input class="m-5" type="text" placeholder="search" aria-label="search" name="search">
 					<!-- <button type="submit" >go</button> -->
-				  </form>
+				  </form> {% endcomment %}
     {% block content %}
 	{% endblock content %}
 			</main>
