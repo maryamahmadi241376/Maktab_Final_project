@@ -33,7 +33,7 @@
 </article>
 
 {%endblock content%}
-{% block script %}
+{% comment %} {% block script %}
 <script>
 $(document).ready(function(){
     localItems = JSON.parse(localStorage.getItem('localItems'));
@@ -75,4 +75,4 @@ $(document).ready(function(){
     })
 })
 </script>
-{% endblock script %}
+{% endblock script %} {% endcomment %}

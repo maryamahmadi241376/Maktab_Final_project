@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="{% url 'home' %}" class="btn btn-info m-2">Order List</a>
+{% for t in object_list %}
+<div class="card-group">
+  <div class="card">
+    <h3 class="card-img-top" >branch name : {{t.restaurant_branch_name}} </h3>
+    <div class="card-body">
+      {% comment %} <h5 class="card-title">category:{{t.category}}</h5> {% endcomment %}
+      {% comment "" %}<p class="card-text">{{t.description}} </p>{% endcomment %}
+      <a href="{% url 'branchdetail' t.pk %}" class="btn btn-info">Menus</a>
+    </div>
+    <div class="card-footer">
+      <small class="text-muted">date:{{t.due_date}}</small>
+    </div>
+  </div> 
+</div>
+{% endfor %}  
+{% endblock content %}    

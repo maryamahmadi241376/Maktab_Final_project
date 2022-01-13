@@ -1,36 +1,46 @@
 {% extends 'base.html' %}
+{% block content %}
+
+
+<div class="card-group text-dark">
+  <div class="card">
+    <h3 class="card-img-top" >food name: {{object.restaurantbranch_set.food.food_name}} </h3>
+    <div class="card-body">
+	<figure><img src="{{objects.branch_menus.food.food_image.url}}" alt="" ></figure>
+      <p class="card-text">price:{{restaurantbranch.price}}</p>
+      <h5>number:{{restaurantbranch.number_menu}}</h5>
+      
+    </div>
+    <div class="card-footer">
+		<a href="{% url 'order_detail' object.id %}" class="button1">Details</a>
+    </div>
+  </div> 
+</div>
+
+{% endblock content %}
+
+
+{% comment %} {% extends 'base.html' %}
 
 {% block content %}
 {% load static %}
-       
+<h2 class="text-white m-5"> Branch Menues </h2>
 
-<article id="content" class="col-8">
+<article id="content" class="container col-11">
 	<div class="wrap">
-<section class="col-1-3"><div class="wrap-col">
-<div class="box">
-<div id="my-foods">
-<h2 class="letter_spacing">{{branch_detail.food_category.food_category_name}}<span></span></h2>
-{% comment %} <figure><img src="{{food.food_image.url}}" alt="" ></figure> {% endcomment %}
-<p class="pad_bot1">{{branch_detail.restaurant_branch_name}}</p>
-<h2 class="letter_spacing">price : <span>{{menus.price}}</span></h2>
-<h2 class="letter_spacing">Restaurant : <span>{{menus.branch.restaurant_branch_name}}</span></h2>
-{%if msg%}
-<h1>{{msg}}</h1>
-{%endif%}
-
-<form method="POST" action="{% url 'order_detail' menus.id %}" class="text-dark">
-	{% csrf_token %}
-	<input min="1" value=1 type="number" name="number" class="m-2">
-	{% comment %} <a href="{% url 'add_to_cart' %}" class="button1 m-2" type="submit">Add To Cart</a> {% endcomment %}
-	<button class="btn btn-dark ml-5" type="submit">Add to Cart</button>
-
-</form>
-
-
-</div>
-</div></section>
-
-</div>
+		{% for i in most_seller_restaurants %}
+			<section class="col-1-3"><div class="wrap-col">
+					<div class="box">
+						<div id="my-foods">
+							<figure><img src="{{i.branch_menus.food.food_image.url}}" alt="" ></figure>
+							<h2 class="letter_spacing">Restaurant : {{i.restaurant_branch_name}}<span></span></h2>
+							<p class="pad_bot1">{{i.branch_menus.food.food_name}}</p>
+							<p class="pad_bot1">{{i.branch_menus.food.created_at_jalali.date}}</p>
+							<a href="{% url 'order_detail' i.id %}" class="button1">Details</a>
+					</div>
+				</div>
+			</section>
+		{%endfor%}  
+	</div>
 </article>
-
-{%endblock content%}
+{%endblock content%} {% endcomment %}
